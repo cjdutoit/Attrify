@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+
+		<Title>Attrify - DeprecatedApi</Title>
+		<Product>Attrify - DeprecatedApi</Product>
+		<PackageId>Attrify_DeprecatedApi</PackageId>
+		<Authors>Christo du Toit</Authors>
+		<Company>Christo du Toit</Company>
+		<Description>A library to mark controlers or actions as deprecated using the [DeprecatedApi] attribute.</Description>
+		<Copyright>Christo du Toit - 2024 (c)</Copyright>
+		<PackageIcon>attributes.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/cjdutoit/Attrify</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/cjdutoit/Attrify</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Attibutes; DeprectedApi; .NET; C#; The Standard; Standard;</PackageTags>
+		<PackageReleaseNotes>
+			Initial release of DeprectedApi Attrify library.
+		</PackageReleaseNotes>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<Version>0.0.0.0</Version>
+		<AssemblyVersion>0.0.0.0</AssemblyVersion>
+		<FileVersion>0.0.0.0</FileVersion>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>License.txt</PackageLicenseFile>
+		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<NoWarn>CS1998</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\Documentation\DeprecatedApi\README.md">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="..\License.txt">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\Resources\Images\attributes.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+	
+</Project>
