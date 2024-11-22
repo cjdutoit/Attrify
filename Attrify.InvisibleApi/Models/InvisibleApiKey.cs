@@ -10,8 +10,8 @@ namespace Attrify.InvisibleApi.Models
     {
         public InvisibleApiKey()
         {
-            Key = $"InvisibleApi-{Guid.NewGuid}";
-            Value = $"{Guid.NewGuid}-{Guid.NewGuid}";
+            Key = $"InvisibleApi-{Guid.NewGuid()}";
+            Value = $"{Guid.NewGuid()}-{Guid.NewGuid()}";
         }
 
         public InvisibleApiKey(string key, string value)

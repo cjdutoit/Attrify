@@ -41,10 +41,14 @@ namespace Attrify.Middlewares
                 return false;
             }
 
-            if (context.Request.Headers.TryGetValue(visibilityHeader.Key, out var headerValue)
-                && headerValue == visibilityHeader.Value
-                && context.User.Identity?.IsAuthenticated == true
-                && context.User.IsInRole(visibilityHeader.Key))
+            bool isVisibilityHeaderValid =
+                context.Request.Headers.TryGetValue(visibilityHeader.Key, out var headerValue)
+                    && headerValue == visibilityHeader.Value;
+
+            bool isUserAuthenticatedAndInRole = context.User.Identity?.IsAuthenticated == true
+                && context.User.IsInRole(visibilityHeader.Key);
+
+            if (isVisibilityHeaderValid && isUserAuthenticatedAndInRole)
             {
                 return false;
             }
