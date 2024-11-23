@@ -220,7 +220,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             httpRequestMock.SetupGet(request => request.Headers)
                 .Returns(new HeaderDictionary(new Dictionary<string, StringValues>
                 {
-            { randomHeaderName, randomHeaderValue }
+                    { randomHeaderName, randomHeaderValue }
                 }));
 
             httpRequestMock.SetupGet(request => request.Method)
@@ -335,7 +335,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             httpRequestMock.SetupGet(request => request.Headers)
                 .Returns(new HeaderDictionary(new Dictionary<string, StringValues>
                 {
-            { randomInvisibleApiKey.Key, randomInvisibleApiKey.Value }
+                    { randomInvisibleApiKey.Key, randomInvisibleApiKey.Value }
                 }));
 
             httpRequestMock.SetupGet(request => request.Method)
@@ -412,5 +412,121 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             claimsPrincipalMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldReturnNotFoundIfNeitherHeaderOrUserRoleFound()
+        {
+            // given
+            var randomInvisibleApiKey = new InvisibleApiKey();
+            string randomHeaderName = GetRandomString();
+            string randomHeaderValue = GetRandomString();
+            string randomEndpoint = $"/{GetRandomString()}";
+            string randomHttpVerb = GetRandomString();
+            var requestDelegateMock = new Mock<RequestDelegate>();
+            var contextMock = new Mock<HttpContext>();
+            var featuresMock = new Mock<IFeatureCollection>();
+            var endpointFeatureMock = new Mock<IEndpointFeature>();
+
+            var endpoint = new Endpoint(
+                requestDelegate: null,
+                metadata: new EndpointMetadataCollection(new InvisibleApiAttribute()),
+                displayName: "TestEndpoint");
+
+            endpointFeatureMock.Setup(endpointFeature =>
+                endpointFeature.Endpoint)
+                    .Returns(endpoint);
+
+            featuresMock.Setup(features =>
+                features.Get<IEndpointFeature>())
+                    .Returns(endpointFeatureMock.Object);
+
+            contextMock.Setup(context =>
+                context.Features)
+                    .Returns(featuresMock.Object);
+
+            var httpRequestMock = new Mock<HttpRequest>();
+            var httpResponseMock = new Mock<HttpResponse>();
+
+            httpRequestMock.SetupGet(request => request.Path)
+                .Returns(randomEndpoint);
+
+            httpRequestMock.SetupGet(request => request.Headers)
+                .Returns(new HeaderDictionary(new Dictionary<string, StringValues>
+                {
+                    { randomHeaderName, randomHeaderValue }
+                }));
+
+            httpRequestMock.SetupGet(request => request.Method)
+                .Returns(randomHttpVerb);
+
+            contextMock.SetupGet(context => context.Request)
+                .Returns(httpRequestMock.Object);
+
+            contextMock.SetupGet(context => context.Response)
+                .Returns(httpResponseMock.Object);
+
+            var identityMock = new Mock<IIdentity>();
+            identityMock.Setup(id => id.IsAuthenticated).Returns(true);
+
+            var claimsPrincipalMock = new Mock<ClaimsPrincipal>();
+
+            claimsPrincipalMock.Setup(user =>
+                user.Identity)
+                    .Returns(identityMock.Object);
+
+            claimsPrincipalMock.Setup(user =>
+                user.IsInRole(randomInvisibleApiKey.Key))
+                    .Returns(false);
+
+            contextMock.Setup(context =>
+                context.User)
+                    .Returns(claimsPrincipalMock.Object);
+
+            httpResponseMock.SetupSet(response => response.StatusCode = It.IsAny<int>())
+                .Verifiable();
+
+            // when
+            var invisibleMiddleware = new InvisibleApiMiddleware(
+                next: requestDelegateMock.Object,
+                visibilityHeader: randomInvisibleApiKey);
+
+            await invisibleMiddleware.InvokeAsync(contextMock.Object);
+
+            // then
+            httpResponseMock.VerifySet(response =>
+                response.StatusCode = StatusCodes.Status404NotFound, Times.Once);
+
+            featuresMock.Verify(features =>
+                features.Get<IEndpointFeature>(),
+                    Times.Once);
+
+            endpointFeatureMock.Verify(endpointFeature =>
+                endpointFeature.Endpoint,
+                    Times.Once);
+
+            httpRequestMock.VerifyGet(request =>
+                request.Headers,
+                    Times.Once());
+
+            claimsPrincipalMock.Verify(user =>
+                user.IsInRole(randomInvisibleApiKey.Key),
+                    Times.Once);
+
+            identityMock.Verify(id =>
+                id.IsAuthenticated,
+                    Times.Once);
+
+            requestDelegateMock.Verify(requestDelegate =>
+                requestDelegate(contextMock.Object),
+                    Times.Never);
+
+            requestDelegateMock.VerifyNoOtherCalls();
+            contextMock.VerifyNoOtherCalls();
+            featuresMock.VerifyNoOtherCalls();
+            endpointFeatureMock.VerifyNoOtherCalls();
+            httpRequestMock.VerifyNoOtherCalls();
+            httpResponseMock.VerifyNoOtherCalls();
+            identityMock.VerifyNoOtherCalls();
+            claimsPrincipalMock.VerifyNoOtherCalls();
+        }
     }
 }
