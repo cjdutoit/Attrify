@@ -45,7 +45,7 @@ namespace Attrify.Middlewares
                     }
                 }
 
-                if (deprecatedApiAttribute.Sunset < System.DateTime.UtcNow)
+                if (deprecatedApiAttribute.Sunset <= System.DateTime.UtcNow)
                 {
                     context.Response.StatusCode = StatusCodes.Status410Gone;
 
