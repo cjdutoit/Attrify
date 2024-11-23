@@ -32,6 +32,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="..\Documentation\DeprecatedApi\README.md">
 			<Pack>true</Pack>
 			<PackagePath></PackagePath>
