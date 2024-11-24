@@ -13,7 +13,7 @@ A library to enhancing REST API functionality through attributes.
 
 ---
 
-### 1. [InvisibleApi](Documentation/InvisibleApi/README.md)
+### 1. [InvisibleApi](Documentation/InvisibleApi/README.md) [![NuGet version (Attrify.InvisibleApi)](https://img.shields.io/nuget/v/Attrify.InvisibleApi.svg?style=flat-square)](https://www.nuget.org/packages/Attrify.InvisibleApi/)
 
 The `Attrify - Invisible API` is a solution designed to hide specific API endpoints, primarily for acceptance testing purposes. 
 Developers can uses the `[invisibleApi]` attribute to mark `Controllers` or `Actions` as invisible, eliminating the need for 
@@ -23,7 +23,7 @@ and returns a `404 Not Found` response, making the endpoint invisible to unautho
 
 ---
 
-### 2. [DeprecatedApi](Documentation/DeprecatedApi/README.md)
+### 2. [DeprecatedApi](Documentation/DeprecatedApi/README.md) [![NuGet version (Attrify.DeprecatedApi)](https://img.shields.io/nuget/v/Attrify.DeprecatedApi.svg?style=flat-square)](https://www.nuget.org/packages/Attrify.DeprecatedApi/)
 
 The `Deprecated API` solution is designed to help developers manage the lifecycle of API endpoints by 
 signaling when they are outdated or set to be decommissioned. By using the `Deprecated API Attribute` 
