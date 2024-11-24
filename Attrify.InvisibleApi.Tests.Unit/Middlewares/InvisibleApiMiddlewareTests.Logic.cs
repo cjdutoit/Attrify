@@ -133,7 +133,11 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
 
             requestDelegateMock.Verify(requestDelegate =>
                 requestDelegate(context),
-                Times.Once);
+                    Times.Once);
+
+            endpointFeatureMock.Verify(endpointFeature =>
+                endpointFeature.Endpoint,
+                    Times.Once);
 
             requestDelegateMock.VerifyNoOtherCalls();
             endpointFeatureMock.VerifyNoOtherCalls();
