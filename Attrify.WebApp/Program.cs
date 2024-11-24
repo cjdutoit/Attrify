@@ -74,7 +74,11 @@ namespace Attrify.WebApp
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                    options.RoutePrefix = string.Empty; // Optional: This makes Swagger available at the root URL.
+                });
             }
 
             app.UseHttpsRedirection();
@@ -83,7 +87,7 @@ namespace Attrify.WebApp
             app.UseDeprecatedApiMiddleware();
             app.UseInvisibleApiMiddleware(invisibleApiKey);
             app.MapControllers().WithOpenApi();
-            app.MapFallbackToFile("/index.html");
+            app.MapFallbackToFile("/swagger/index.html");
         }
     }
 }
