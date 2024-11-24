@@ -3,12 +3,14 @@
 // -----------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Attrify.Attributes;
 using Attrify.InvisibleApi.Models;
 using Attrify.Middlewares;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Primitives;
@@ -24,9 +26,8 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             // given
             var randomInvisibleApiKey = new InvisibleApiKey();
             var requestDelegateMock = new Mock<RequestDelegate>();
-            var contextMock = new Mock<HttpContext>();
-            var featuresMock = new Mock<IFeatureCollection>();
             var endpointFeatureMock = new Mock<IEndpointFeature>();
+            string expectedResult = "This is a normal API.";
 
             var endpoint = new Endpoint(
                 requestDelegate: null,
@@ -37,39 +38,45 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
                 endpointFeature.Endpoint)
                     .Returns(endpoint);
 
-            featuresMock.Setup(features =>
-                features.Get<IEndpointFeature>())
-                    .Returns(endpointFeatureMock.Object);
+            var context = new DefaultHttpContext();
+            context.Features.Set(endpointFeatureMock.Object);
 
-            contextMock.Setup(context =>
-                context.Features)
-                    .Returns(featuresMock.Object);
+            requestDelegateMock
+                .Setup(requestDelegate => requestDelegate(It.IsAny<HttpContext>()))
+                .Callback<HttpContext>(ctx =>
+                {
+                    ctx.Response.WriteAsync(expectedResult).Wait();
+                })
+                .Returns(Task.CompletedTask);
+
+            var memoryStream = new MemoryStream();
+            context.Response.Body = memoryStream;
 
             // when
             var invisibleMiddleware = new InvisibleApiMiddleware(
                 next: requestDelegateMock.Object,
                 visibilityHeader: randomInvisibleApiKey);
 
-            await invisibleMiddleware.InvokeAsync(contextMock.Object);
+            await invisibleMiddleware.InvokeAsync(context);
 
             // then
-            requestDelegateMock.Verify(requestDelegate =>
-                requestDelegate(contextMock.Object),
-                    Times.Once);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            using var reader = new StreamReader(memoryStream);
+            string actualResult = await reader.ReadToEndAsync();
+            actualResult.Should().Be(expectedResult);
 
-            featuresMock.Verify(features =>
-                features.Get<IEndpointFeature>(),
-                    Times.Once);
+            requestDelegateMock.Verify(requestDelegate =>
+                requestDelegate(context),
+                Times.Once);
 
             endpointFeatureMock.Verify(endpointFeature =>
                 endpointFeature.Endpoint,
-                    Times.Once);
+                Times.Once);
 
             requestDelegateMock.VerifyNoOtherCalls();
-            contextMock.VerifyNoOtherCalls();
-            featuresMock.VerifyNoOtherCalls();
             endpointFeatureMock.VerifyNoOtherCalls();
         }
+
 
         [Fact]
         public async Task ShouldHitApiEndpointIfEndpointIsConfiguredProperly()

@@ -28,6 +28,18 @@ namespace Attrify.Middlewares
             if (endpoint != null && IsInvisibleApi(endpoint, context))
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+                var errorDetails = new
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                    Title = $"{StatusCodes.Status404NotFound} -  Not Found",
+                    Error = $"The requested resource could not be found. Please check the URL and try again.",
+                };
+
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsJsonAsync(errorDetails);
+
                 return;
             }
 
