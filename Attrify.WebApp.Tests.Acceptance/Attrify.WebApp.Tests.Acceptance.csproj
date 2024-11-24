@@ -32,7 +32,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Attrify.InvisibleApi\Attrify.InvisibleApi.csproj" />
-	  <ProjectReference Include="..\Attrify.WebApplication\Attrify.WebApplication.csproj" />
 	  <ProjectReference Include="..\Attrify.WebApp\Attrify.WebApp.csproj" />
 	</ItemGroup>
 
