@@ -4,6 +4,7 @@
 
 using System.IO;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Attrify.Attributes;
 using Attrify.InvisibleApi.Models;
@@ -151,6 +152,15 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             string randomHttpVerb = GetRandomString();
             var requestDelegateMock = new Mock<RequestDelegate>();
             string expectedHeaderKey = randomInvisibleApiKey.Key;
+            var expectedResponse = new
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = $"{StatusCodes.Status404NotFound} -  Not Found",
+                Error = "The requested resource could not be found. Please check the URL and try again."
+            };
+
+            string expectedResponseContent = JsonSerializer.Serialize(expectedResponse);
 
             var endpoint = new Endpoint(
                 requestDelegate: null,
@@ -185,6 +195,9 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
 
             // then
             context.Response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            var actualResponseContent = await new StreamReader(memoryStream).ReadToEndAsync();
+            actualResponseContent.Should().BeEquivalentTo(expectedResponseContent);
             endpointFeatureMock.Verify(feature => feature.Endpoint, Times.Once);
             requestDelegateMock.Verify(requestDelegate => requestDelegate(context), Times.Never);
             memoryStream.Dispose();
@@ -269,7 +282,6 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
 
             // then
             context.Response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
-
             endpointFeatureMock.Verify(feature => feature.Endpoint, Times.Once);
             requestDelegateMock.Verify(requestDelegate => requestDelegate(context), Times.Never);
         }
