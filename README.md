@@ -5,8 +5,6 @@
 [![The Standard - COMPLIANT](https://img.shields.io/badge/The_Standard-COMPLIANT-2ea44f)](https://github.com/hassanhabib/The-Standard)
 [![The Standard Community](https://img.shields.io/discord/934130100008538142?color=%237289da&label=The%20Standard%20Community&logo=Discord)](https://discord.gg/vdPZ7hS52X)
 [![NuGet version (Attrify)](https://img.shields.io/nuget/v/Attrify.svg?style=flat-square)](https://www.nuget.org/packages/Attrify/)
-[![NuGet downloads (Attrify)](https://img.shields.io/nuget/dt/Attrify.svg?style=flat-square)](https://www.nuget.org/packages/Attrify/)
-
 
 
 A library to enhancing REST API functionality through attributes.
