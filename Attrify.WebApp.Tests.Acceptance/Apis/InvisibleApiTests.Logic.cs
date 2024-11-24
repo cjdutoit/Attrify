@@ -28,10 +28,8 @@ namespace Attrify.WebApp.Tests.Acceptance.Apis
 
             // then
             actualMessage.Should().Be(expectedMessage);
-
             bool hasSunsetHeader = response.Headers.Contains("Sunset");
             hasSunsetHeader.Should().BeFalse("because it should not include a 'Sunset' header not deprecated.");
-
             bool hasWarningHeader = response.Headers.Contains("Warning");
             hasSunsetHeader.Should().BeFalse("because it should not include a 'Warning' header not deprecated.");
         }
@@ -83,10 +81,8 @@ namespace Attrify.WebApp.Tests.Acceptance.Apis
 
             // then
             actualMessage.Should().Be(expectedMessage);
-
             bool hasSunsetHeader = response.Headers.Contains("Sunset");
             hasSunsetHeader.Should().BeFalse("because it should not include a 'Sunset' header not deprecated.");
-
             bool hasWarningHeader = response.Headers.Contains("Warning");
             hasSunsetHeader.Should().BeFalse("because it should not include a 'Warning' header not deprecated.");
         }

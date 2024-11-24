@@ -94,7 +94,6 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
 
             var context = new DefaultHttpContext();
             context.Features.Set(endpointFeatureMock.Object);
-
             context.Request.Path = randomEndpoint;
             context.Request.Method = randomHttpVerb;
             context.Request.Headers.Add(randomInvisibleApiKey.Key, randomInvisibleApiKey.Value);
@@ -258,6 +257,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             actualResponseContent.Should().BeEquivalentTo(expectedResponseContent);
             endpointFeatureMock.Verify(feature => feature.Endpoint, Times.Once);
             requestDelegateMock.Verify(requestDelegate => requestDelegate(context), Times.Never);
+            memoryStream.Dispose();
         }
 
         [Fact]
@@ -313,7 +313,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             actualResponseContent.Should().BeEquivalentTo(expectedResponseContent);
             endpointFeatureMock.Verify(feature => feature.Endpoint, Times.Once);
             requestDelegateMock.Verify(requestDelegate => requestDelegate(context), Times.Never);
+            memoryStream.Dispose();
         }
-
     }
 }
