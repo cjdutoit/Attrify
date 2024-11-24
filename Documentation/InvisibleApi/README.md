@@ -13,15 +13,17 @@ This approach is particularly useful for:
 
 ## Overview
 
-The Attrify - Invisible API is an adaption of the original [InvisibleApi](https://github.com/hassanhabib/invisibleapi) that was created by `Hassan Habib` 
-that relies only middleware configuration to hide endpoints. 
+The `Attrify - Invisible API` is a solution designed to hide specific API endpoints, primarily for acceptance testing purposes. 
+Developers can uses the `[invisibleApi]` attribute to mark `Controllers` or `Actions` as invisible, eliminating the need for 
+manual endpoint configuration in middleware. It also introduces an additional security layer by requiring that an authenticated 
+user must belong to a certain role to access the endpoint. If these conditions are not met, the middleware intercepts the request 
+and returns a `404 Not Found` response, making the endpoint invisible to unauthorized users.
 
-The Attrify - Invisible API has been adapted to cater for a very specific use case and is not intended for use by any consumers (internal or otherwise), but rather to aid with 
-acceptance testing. The Attrify - Invisible API is designed to hide endpoints that are necessary for acceptance testing but must never be exposed in production environments.
+This implementation is specifically tailored for testing scenarios where endpoints need to be hidden in production environments.
+It is not intended to be used by consumers (internal or otherwise).
 
-This version of the Invisible API makes use of the `[invisibleApi]` attribute to mark specific endpoints as invisible doing away with manual endpoint configuration in the middleware. 
-In addition to the request header requirement, it also requires that an authenticated user belongs to a role to access the endpoint.
-If both conditions are not met, the middleware intercepts the request and returns a `404 Not Found` response, making the endpoint invisible to unauthorized users.
+
+(The `Attrify - Invisible API` is an adaptation of the original [InvisibleApi](https://github.com/hassanhabib/invisibleapi) created by [Hassan Habib](https://github.com/hassanhabib))
 
 * * * * *
 
@@ -441,7 +443,7 @@ This test will access the `PostProductAsync` and `DeleteProductByIdAsync` endpoi
 
 Acknowledgements
 ----------------
-This version of the Invisible API is inspired by the work of `Hassan Habib`. His original implementation, [InvisibleApi](https://github.com/hassanhabib/invisibleapi), served as the foundation for this adaptation. 
+This version of the Invisible API is inspired by the work of [Hassan Habib](https://github.com/hassanhabib). His original implementation, [InvisibleApi](https://github.com/hassanhabib/invisibleapi), served as the foundation for this adaptation. 
 
 You can find the original code and more details here:
 
