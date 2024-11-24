@@ -11,9 +11,9 @@ namespace Attrify.WebApplication.Tests.Acceptance.Brokers
 {
     public partial class ApiBroker
     {
-        private readonly TestWebApplicationFactory<Program> webApplicationFactory;
-        private readonly HttpClient httpClient;
-        private readonly IRESTFulApiFactoryClient apiFactoryClient;
+        internal readonly TestWebApplicationFactory<Program> webApplicationFactory;
+        internal readonly HttpClient httpClient;
+        internal readonly IRESTFulApiFactoryClient apiFactoryClient;
 
         public ApiBroker()
         {

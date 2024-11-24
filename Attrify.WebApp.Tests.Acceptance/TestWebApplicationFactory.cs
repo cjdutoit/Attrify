@@ -23,7 +23,6 @@ namespace Attrify.WebApp.Tests.Acceptance
 
         private static void OverrideSecurityForTesting(IServiceCollection services)
         {
-            // Find the first instance of InvisibleApiKey
             var invisibleApiKeyDescriptor = services
                 .FirstOrDefault(d => d.ServiceType == typeof(InvisibleApiKey));
 
@@ -31,14 +30,12 @@ namespace Attrify.WebApp.Tests.Acceptance
 
             if (invisibleApiKeyDescriptor != null)
             {
-                // Resolve the InvisibleApiKey instance
                 using (var serviceProvider = services.BuildServiceProvider())
                 {
                     invisibleApiKey = serviceProvider.GetService<InvisibleApiKey>();
                 }
             }
 
-            // Remove existing authentication and authorization
             var authenticationDescriptor = services
                 .FirstOrDefault(d => d.ServiceType == typeof(IAuthenticationSchemeProvider));
 
@@ -47,7 +44,6 @@ namespace Attrify.WebApp.Tests.Acceptance
                 services.Remove(authenticationDescriptor);
             }
 
-            // Override authentication and authorization
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = "TestScheme";
@@ -55,7 +51,7 @@ namespace Attrify.WebApp.Tests.Acceptance
             })
             .AddScheme<CustomAuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options =>
             {
-                options.InvisibleApiKey = invisibleApiKey; // Pass the InvisibleApiKey to the handler
+                options.InvisibleApiKey = invisibleApiKey;
             });
 
             services.AddAuthorization(options =>

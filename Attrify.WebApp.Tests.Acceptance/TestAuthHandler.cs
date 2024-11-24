@@ -19,7 +19,8 @@ namespace Attrify.WebApp.Tests.Acceptance
             IOptionsMonitor<CustomAuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder)
-            : base(options, logger, encoder) { }
+            : base(options, logger, encoder)
+        { }
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {

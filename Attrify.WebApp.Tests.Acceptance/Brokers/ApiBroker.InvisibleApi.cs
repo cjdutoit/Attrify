@@ -8,7 +8,7 @@ namespace Attrify.WebApplication.Tests.Acceptance.Brokers
 {
     public partial class ApiBroker
     {
-        private const string invisibleApiRelativeUrl = "api/InvisibleApi";
+        private const string invisibleApiRelativeBaseUrl = "api/InvisibleApi";
 
         public async ValueTask<string> GetVisibleAsync() =>
             await this.apiFactoryClient.GetContentStringAsync($"{invisibleApiRelativeUrl}/visible");
