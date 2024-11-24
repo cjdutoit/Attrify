@@ -64,5 +64,31 @@ namespace Attrify.WebApp.Tests.Acceptance.Apis
             actualErrorMessage.Should().Be(expectedErrorMessage);
         }
 
+        [Fact]
+        public async Task ShouldGetContentForInvisibleWhenHeadersAndRoleArePresentAsync()
+        {
+            // given
+            var httpClient = this.apiBroker.webApplicationFactory.CreateClient();
+
+            // Since the apiBroker uses the TestWebApplicationFactory the user is authenticated and in the correct role.
+            httpClient.DefaultRequestHeaders
+                .Add(this.apiBroker.invisibleApiKey.Key, this.apiBroker.invisibleApiKey.Value);
+
+            string expectedMessage = "This is an invisible API.";
+
+            // when
+            HttpResponseMessage response = await httpClient.GetAsync(this.apiBroker.InvisibleRelativeUrl);
+
+            string actualMessage = await response.Content.ReadAsStringAsync();
+
+            // then
+            actualMessage.Should().Be(expectedMessage);
+
+            bool hasSunsetHeader = response.Headers.Contains("Sunset");
+            hasSunsetHeader.Should().BeFalse("because it should not include a 'Sunset' header not deprecated.");
+
+            bool hasWarningHeader = response.Headers.Contains("Warning");
+            hasSunsetHeader.Should().BeFalse("because it should not include a 'Warning' header not deprecated.");
+        }
     }
 }
