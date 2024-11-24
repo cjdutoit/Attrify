@@ -38,6 +38,12 @@ namespace Attrify.Infrastructure.Services
                 Jobs = new Dictionary<string, Job>
                 {
                     {
+                        "label",
+                        new LabelJob(
+                            runsOn: BuildMachines.UbuntuLatest,
+                            githubToken: "${{ secrets.PAT_FOR_TAGGING }}")
+                    },
+                    {
                         "build",
                         new Job
                         {
