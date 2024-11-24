@@ -441,6 +441,49 @@ This test will access the `PostProductAsync` and `DeleteProductByIdAsync` endpoi
 
 ---
 
+Additional / Advanced (Optional): Hide from Swagger UI
+----------------
+
+If Swagger is deployed in your production environment, you may want to hide invisible endpoints from the Swagger UI.
+
+To hide these endpoints from Swagger, you can create a custom `IDocumentFilter`:
+
+```csharp
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+public class InvisibleApiDocumentFilter : IDocumentFilter
+{
+    public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
+    {
+        var pathsToRemove = swaggerDoc.Paths
+            .Where(p => context.ApiDescriptions
+                .Any(api => p.Key.Contains(api.RelativePath) &&
+                            api.CustomAttributes().OfType<InvisibleApiAttribute>().Any()))
+            .Select(p => p.Key)
+            .ToList();
+
+        foreach (var path in pathsToRemove)
+        {
+            swaggerDoc.Paths.Remove(path);
+        }
+    }
+}
+```
+
+Register it in `SwaggerGen` setup:
+
+```csharp
+services.AddSwaggerGen(c =>
+{
+    c.DocumentFilter<InvisibleApiDocumentFilter>();
+});
+```
+
+This will ensure that `[InvisibleApi]` endpoints are not displayed in the Swagger UI.
+
+---
+
 Acknowledgements
 ----------------
 This version of the Invisible API is inspired by the work of [Hassan Habib](https://github.com/hassanhabib). His original implementation, [InvisibleApi](https://github.com/hassanhabib/invisibleapi), served as the foundation for this adaptation. 
