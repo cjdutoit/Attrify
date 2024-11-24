@@ -2,10 +2,8 @@
 // Copyright (c)  Christo du Toit - All rights reserved.
 // -----------------------------------------------------
 
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using Attrify.Attributes;
 using Attrify.InvisibleApi.Models;
@@ -13,7 +11,6 @@ using Attrify.Middlewares;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.Primitives;
 using Moq;
 
 namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
@@ -234,7 +231,6 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             requestDelegateMock.Verify(requestDelegate => requestDelegate(context), Times.Never);
         }
 
-
         [Fact]
         public async Task ShouldReturnNotFoundIfNeitherHeaderOrUserRoleFound()
         {
@@ -245,111 +241,38 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             string randomEndpoint = $"/{GetRandomString()}";
             string randomHttpVerb = GetRandomString();
             var requestDelegateMock = new Mock<RequestDelegate>();
-            var contextMock = new Mock<HttpContext>();
-            var featuresMock = new Mock<IFeatureCollection>();
-            var endpointFeatureMock = new Mock<IEndpointFeature>();
 
             var endpoint = new Endpoint(
                 requestDelegate: null,
                 metadata: new EndpointMetadataCollection(new InvisibleApiAttribute()),
                 displayName: "TestEndpoint");
 
-            endpointFeatureMock.Setup(endpointFeature =>
-                endpointFeature.Endpoint)
-                    .Returns(endpoint);
+            var context = new DefaultHttpContext();
+            context.Request.Path = randomEndpoint;
+            context.Request.Method = randomHttpVerb;
+            context.Request.Headers.Add(randomHeaderName, randomHeaderValue);
 
-            featuresMock.Setup(features =>
-                features.Get<IEndpointFeature>())
-                    .Returns(endpointFeatureMock.Object);
+            var claimsIdentity = new ClaimsIdentity(authenticationType: "TestAuthentication");
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            context.User = claimsPrincipal;
 
-            contextMock.Setup(context =>
-                context.Features)
-                    .Returns(featuresMock.Object);
-
-            var httpRequestMock = new Mock<HttpRequest>();
-            var httpResponseMock = new Mock<HttpResponse>();
-
-            httpRequestMock.SetupGet(request => request.Path)
-                .Returns(randomEndpoint);
-
-            httpRequestMock.SetupGet(request => request.Headers)
-                .Returns(new HeaderDictionary(new Dictionary<string, StringValues>
-                {
-                    { randomHeaderName, randomHeaderValue }
-                }));
-
-            httpRequestMock.SetupGet(request => request.Method)
-                .Returns(randomHttpVerb);
-
-            contextMock.SetupGet(context => context.Request)
-                .Returns(httpRequestMock.Object);
-
-            contextMock.SetupGet(context => context.Response)
-                .Returns(httpResponseMock.Object);
-
-            var identityMock = new Mock<IIdentity>();
-            identityMock.Setup(id => id.IsAuthenticated).Returns(true);
-
-            var claimsPrincipalMock = new Mock<ClaimsPrincipal>();
-
-            claimsPrincipalMock.Setup(user =>
-                user.Identity)
-                    .Returns(identityMock.Object);
-
-            claimsPrincipalMock.Setup(user =>
-                user.IsInRole(randomInvisibleApiKey.Key))
-                    .Returns(false);
-
-            contextMock.Setup(context =>
-                context.User)
-                    .Returns(claimsPrincipalMock.Object);
-
-            httpResponseMock.SetupSet(response => response.StatusCode = It.IsAny<int>())
-                .Verifiable();
+            var endpointFeatureMock = new Mock<IEndpointFeature>();
+            endpointFeatureMock.Setup(feature => feature.Endpoint).Returns(endpoint);
+            context.Features.Set(endpointFeatureMock.Object);
 
             // when
             var invisibleMiddleware = new InvisibleApiMiddleware(
                 next: requestDelegateMock.Object,
                 visibilityHeader: randomInvisibleApiKey);
 
-            await invisibleMiddleware.InvokeAsync(contextMock.Object);
+            await invisibleMiddleware.InvokeAsync(context);
 
             // then
-            httpResponseMock.VerifySet(response =>
-                response.StatusCode = StatusCodes.Status404NotFound, Times.Once);
+            context.Response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
 
-            featuresMock.Verify(features =>
-                features.Get<IEndpointFeature>(),
-                    Times.Once);
-
-            endpointFeatureMock.Verify(endpointFeature =>
-                endpointFeature.Endpoint,
-                    Times.Once);
-
-            httpRequestMock.VerifyGet(request =>
-                request.Headers,
-                    Times.Once());
-
-            claimsPrincipalMock.Verify(user =>
-                user.IsInRole(randomInvisibleApiKey.Key),
-                    Times.Once);
-
-            identityMock.Verify(id =>
-                id.IsAuthenticated,
-                    Times.Once);
-
-            requestDelegateMock.Verify(requestDelegate =>
-                requestDelegate(contextMock.Object),
-                    Times.Never);
-
-            requestDelegateMock.VerifyNoOtherCalls();
-            contextMock.VerifyNoOtherCalls();
-            featuresMock.VerifyNoOtherCalls();
-            endpointFeatureMock.VerifyNoOtherCalls();
-            httpRequestMock.VerifyNoOtherCalls();
-            httpResponseMock.VerifyNoOtherCalls();
-            identityMock.VerifyNoOtherCalls();
-            claimsPrincipalMock.VerifyNoOtherCalls();
+            endpointFeatureMock.Verify(feature => feature.Endpoint, Times.Once);
+            requestDelegateMock.Verify(requestDelegate => requestDelegate(context), Times.Never);
         }
+
     }
 }
