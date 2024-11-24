@@ -2,6 +2,7 @@
 // Copyright (c)  Christo du Toit - All rights reserved.
 // -----------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Attrify.Attributes;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace Attrify.Middlewares
             {
                 if (!context.Response.Headers.ContainsKey("Sunset"))
                 {
-                    context.Response.Headers.Add("Sunset", deprecatedApiAttribute.Sunset.ToString("yyyy-MM-dd"));
+                    context.Response.Headers.Add("Sunset", deprecatedApiAttribute.Sunset);
                 }
 
                 if (!string.IsNullOrEmpty(deprecatedApiAttribute.Warning))
@@ -45,7 +46,14 @@ namespace Attrify.Middlewares
                     }
                 }
 
-                if (deprecatedApiAttribute.Sunset <= System.DateTime.UtcNow)
+                bool isParsed = DateTime.TryParse(deprecatedApiAttribute.Sunset, out DateTime sunsetDate);
+
+                if (!isParsed)
+                {
+                    sunsetDate = DateTime.UtcNow;
+                }
+
+                if (sunsetDate <= System.DateTime.UtcNow)
                 {
                     context.Response.StatusCode = StatusCodes.Status410Gone;
 
@@ -59,7 +67,7 @@ namespace Attrify.Middlewares
                             $"This API has been sunset and is no longer available.  " +
                             $"The link should provide details about alternatives, or migration steps.",
 
-                        SunsetDate = deprecatedApiAttribute.Sunset.ToString("yyyy-MM-dd"),
+                        SunsetDate = sunsetDate.ToString("yyyy-MM-dd"),
                         Link = deprecatedApiAttribute.Link ?? "N/A"
                     };
 

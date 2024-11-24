@@ -43,7 +43,7 @@ namespace Attrify.Extensions
         /// </summary>
         /// <param name="builder">The <see cref="IApplicationBuilder"/> to configure.</param>
         /// <returns>The modified <see cref="IApplicationBuilder"/>.</returns>
-        public static IApplicationBuilder UseInvisibleApiMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseDeprecatedApiMiddleware(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<DeprecatedApiMiddleware>();
         }

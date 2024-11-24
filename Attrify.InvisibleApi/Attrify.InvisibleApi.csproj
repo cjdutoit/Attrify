@@ -50,5 +50,10 @@
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.OpenApi" Version="1.6.22" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.0.0" />
+	</ItemGroup>
 
 </Project>

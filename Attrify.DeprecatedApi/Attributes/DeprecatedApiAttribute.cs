@@ -17,7 +17,7 @@ namespace Attrify.Attributes
         /// This is the date after which the API is considered deprecated or removed.
         /// </summary>
         /// <example>2025-01-01</example>
-        public DateTime Sunset { get; set; }
+        public string Sunset { get; set; }
 
         /// <summary>
         /// Gets or sets a warning message to be included in responses.
