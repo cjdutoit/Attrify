@@ -78,12 +78,12 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             var contextMock = new Mock<HttpContext>();
             var featuresMock = new Mock<IFeatureCollection>();
             var endpointFeatureMock = new Mock<IEndpointFeature>();
-            var futureSunsetDate = DateTime.UtcNow.AddDays(30);
+            var futureSunsetDate = DateTime.UtcNow.AddDays(30).ToString("yyyy-MM-dd");
 
             var deprecatedApiAttribute = new DeprecatedApiAttribute
             {
                 Sunset = futureSunsetDate,
-                Warning = $"This API is deprecated and will be removed on {futureSunsetDate.ToString("yyyy-MM-dd")}.",
+                Warning = $"This API is deprecated and will be removed on {futureSunsetDate}.",
                 Link = "https://api.example.com/deprecation-info"
             };
 
@@ -119,7 +119,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             contextMock.Object.Response.Headers.ContainsKey("Sunset").Should().BeTrue();
 
             contextMock.Object.Response.Headers["Sunset"].ToString()
-                .Should().Be(futureSunsetDate.ToString("yyyy-MM-dd"));
+                .Should().Be(futureSunsetDate);
 
             contextMock.Object.Response.Headers.ContainsKey("Warning").Should().BeTrue();
 
@@ -164,12 +164,12 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             // Given
             var requestDelegateMock = new Mock<RequestDelegate>();
             var endpointFeatureMock = new Mock<IEndpointFeature>();
-            var pastSunsetDate = DateTime.UtcNow;
+            var pastSunsetDate = DateTime.UtcNow.ToString("yyyy-MM-dd");
 
             var deprecatedApiAttribute = new DeprecatedApiAttribute
             {
                 Sunset = pastSunsetDate,
-                Warning = $"This API is deprecated and will be removed on {pastSunsetDate:yyyy-MM-dd}.",
+                Warning = $"This API is deprecated and will be removed on {pastSunsetDate}.",
                 Link = "https://api.example.com/deprecation-info"
             };
 
@@ -182,7 +182,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
                 { "error", $"This API has been sunset and is no longer available.  " +
                     $"The link should provide details about alternatives, or migration steps." },
 
-                { "sunsetDate", pastSunsetDate.ToString("yyyy-MM-dd") },
+                { "sunsetDate", pastSunsetDate },
                 { "link", deprecatedApiAttribute.Link ?? "N/A" }
             };
 
@@ -212,7 +212,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             context.Response.ContentType.Should().Contain("application/json");
 
             context.Response.Headers["Sunset"].ToString()
-                .Should().Be(pastSunsetDate.ToString("yyyy-MM-dd"));
+                .Should().Be(pastSunsetDate);
 
             context.Response.Headers["Warning"].ToString()
                 .Should().Be(deprecatedApiAttribute.Warning);

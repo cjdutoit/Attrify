@@ -1,0 +1,6 @@
+@Attrify.WebApp_HostAddress = http://localhost:7261
+
+GET {{Attrify.WebApp_HostAddress}}/swagger/index.html
+Accept: application/json
+
+###

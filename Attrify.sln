@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attrify.Infrastructure", "Attrify.Infrastructure\Attrify.Infrastructure.csproj", "{7E8319BD-CA92-491E-8B79-B9DABA20C413}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attrify.DeprecatedApi", "Attrify.DeprecatedApi\Attrify.DeprecatedApi.csproj", "{44BCA1A4-1B3B-408B-B03C-0406B73AA4CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attrify.DeprecatedApi.Tests.Unit", "Attrify.DeprecatedApi.Tests.Unit\Attrify.DeprecatedApi.Tests.Unit.csproj", "{DA7BD303-3515-4AFD-A5CF-2594004FD997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attrify.WebApp.Tests.Acceptance", "Attrify.WebApp.Tests.Acceptance\Attrify.WebApp.Tests.Acceptance.csproj", "{516B5611-FEF3-4AC0-9741-9AFB84A49DE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attrify.WebApp", "Attrify.WebApp\Attrify.WebApp.csproj", "{DF22231F-1512-4994-ACEC-FC114AC58EE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,8 +49,19 @@ Global
 		{DA7BD303-3515-4AFD-A5CF-2594004FD997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA7BD303-3515-4AFD-A5CF-2594004FD997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA7BD303-3515-4AFD-A5CF-2594004FD997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{516B5611-FEF3-4AC0-9741-9AFB84A49DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{516B5611-FEF3-4AC0-9741-9AFB84A49DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{516B5611-FEF3-4AC0-9741-9AFB84A49DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{516B5611-FEF3-4AC0-9741-9AFB84A49DE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF22231F-1512-4994-ACEC-FC114AC58EE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF22231F-1512-4994-ACEC-FC114AC58EE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF22231F-1512-4994-ACEC-FC114AC58EE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF22231F-1512-4994-ACEC-FC114AC58EE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37A5EFF1-C898-4F0A-925C-10A48FC4EBEC}
 	EndGlobalSection
 EndGlobal
