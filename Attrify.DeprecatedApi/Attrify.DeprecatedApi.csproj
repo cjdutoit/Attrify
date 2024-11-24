@@ -5,9 +5,9 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 
-		<Title>Attrify - DeprecatedApi</Title>
-		<Product>Attrify - DeprecatedApi</Product>
-		<PackageId>Attrify_DeprecatedApi</PackageId>
+		<Title>Attrify.DeprecatedApi</Title>
+		<Product>Attrify.DeprecatedApi</Product>
+		<PackageId>Attrify.DeprecatedApi</PackageId>
 		<Authors>Christo du Toit</Authors>
 		<Company>Christo du Toit</Company>
 		<Description>A library to mark controlers or actions as deprecated using the [DeprecatedApi] attribute.</Description>
@@ -21,9 +21,9 @@
 			Initial release of DeprectedApi Attrify library.
 		</PackageReleaseNotes>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<Version>0.0.0.1</Version>
-		<AssemblyVersion>0.0.0.1</AssemblyVersion>
-		<FileVersion>0.0.0.1</FileVersion>
+		<Version>0.0.0.2</Version>
+		<AssemblyVersion>0.0.0.2</AssemblyVersion>
+		<FileVersion>0.0.0.2</FileVersion>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<IsPackable>true</IsPackable>
