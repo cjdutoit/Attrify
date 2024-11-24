@@ -14,11 +14,14 @@ on:
 jobs:
   label:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read          # Grants read access to repository contents
+      pull-requests: write    # Grants write access to pull requests (for adding labels, etc.)
     steps:
     - name: Apply Label
       uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.PAT_FOR_TAGGING }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: >2
 
           const prefixes = [
