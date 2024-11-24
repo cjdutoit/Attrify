@@ -14,13 +14,12 @@ namespace Attrify.WebApp.Tests.Acceptance.Apis
         public async Task ShouldGetMessageNonInvisibleApiAsync()
         {
             // given
-
             string expectedMessage =
                 "This is a normal API.";
 
             // when
             HttpResponseMessage response = await this.apiBroker.httpClient
-                .GetAsync(this.apiBroker.NonDeprecatedRelativeUrl);
+                .GetAsync(this.apiBroker.VisibleRelativeUrl);
 
             string actualMessage = await response.Content.ReadAsStringAsync();
 
