@@ -15,6 +15,16 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
+
+    - name: Check if pull request is from a fork
+      id: check_fork
+      run: |
+        echo "isFork=$(jq -r '.pull_request.head.repo.fork' "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV
+
+    - name: Skip job if PR is from a fork
+      if: env.isFork == 'true'
+      run: echo "This is a fork. Skipping the label job."
+    
     - name: Apply Label
       uses: actions/github-script@v6
       with:
