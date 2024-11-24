@@ -30,7 +30,6 @@ namespace Attrify.WebApp
             IConfiguration configuration,
             InvisibleApiKey invisibleApiKey)
         {
-            // Load settings from launchSettings.json (for testing)
             var projectDir = Directory.GetCurrentDirectory();
             var launchSettingsPath = Path.Combine(projectDir, "Properties", "launchSettings.json");
 
@@ -40,13 +39,8 @@ namespace Attrify.WebApp
             }
 
             builder.Services.AddSingleton(invisibleApiKey);
-
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddMicrosoftIdentityWebApi(azureAdOptions);
-
             builder.Services.AddAuthorization();
             builder.Services.AddHttpContextAccessor();
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
@@ -74,7 +68,11 @@ namespace Attrify.WebApp
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                    options.RoutePrefix = string.Empty; // Optional: This makes Swagger available at the root URL.
+                });
             }
 
             app.UseHttpsRedirection();
@@ -83,7 +81,7 @@ namespace Attrify.WebApp
             app.UseDeprecatedApiMiddleware();
             app.UseInvisibleApiMiddleware(invisibleApiKey);
             app.MapControllers().WithOpenApi();
-            app.MapFallbackToFile("/index.html");
+            app.MapFallbackToFile("/swagger/index.html");
         }
     }
 }
