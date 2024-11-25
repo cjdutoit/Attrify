@@ -178,8 +178,39 @@ The middleware evaluates each incoming request:
             }
         }
     ```
+2.  Add the middleware to your application's DI container :
 
-2.  Add the middleware to your application's pipeline:
+    #### In `Program.cs` or `Startup.cs`:
+
+    ```csharp
+
+        public class Program
+        {
+            public static void Main(string[] args)
+            {
+                var builder = WebApplication.CreateBuilder(args);
+                var invisibleApiKey = new InvisibleApiKey();
+                ConfigureServices(builder, builder.Configuration, invisibleApiKey);
+                var app = builder.Build();
+                ConfigurePipeline(app, invisibleApiKey);
+                app.Run();
+            }
+
+            public static void ConfigureServices(
+                WebApplicationBuilder builder,
+                IConfiguration configuration,
+                InvisibleApiKey invisibleApiKey)
+            {
+                ...
+
+                builder.Services.AddSingleton(invisibleApiKey);
+
+                ...
+
+            }
+        }
+    ```
+3.  Add the middleware to your application's pipeline:
 
     #### In `Program.cs` or `Startup.cs`:
 
