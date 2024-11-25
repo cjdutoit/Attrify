@@ -311,7 +311,7 @@ header is present in the request and the user is authenticated with the required
 
 * * * * *
 
-## Setup the Web Application
+## Setup the Acceptance Test Project
 
 ### Step 1: Create a Test Auth Handler
 
