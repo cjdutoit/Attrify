@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Attrify.DeprecatedApi.Services.DeprecatedApiScanners
 {
-    internal class DeprecatedApiScannerService : IDeprecatedApiScannerService
+    internal partial class DeprecatedApiScannerService : IDeprecatedApiScannerService
     {
         private readonly ApplicationPartManager partManager;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -28,7 +28,8 @@ namespace Attrify.DeprecatedApi.Services.DeprecatedApiScanners
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<List<DeprecatedApiInfo>> GetDeprecatedApisAsync()
+        public ValueTask<List<DeprecatedApiInfo>> GetDeprecatedApisAsync() =>
+        TryCatch(async () =>
         {
             var deprecatedApis = new List<DeprecatedApiInfo>();
             var controllerFeature = new ControllerFeature();
@@ -89,6 +90,6 @@ namespace Attrify.DeprecatedApi.Services.DeprecatedApiScanners
             }
 
             return deprecatedApis;
-        }
+        });
     }
 }

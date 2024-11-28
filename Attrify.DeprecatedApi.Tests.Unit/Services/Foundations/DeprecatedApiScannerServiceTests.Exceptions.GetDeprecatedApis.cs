@@ -27,7 +27,7 @@ namespace Attrify.DeprecatedApi.Tests.Unit.Services.Foundations
 
             var expectedDeprecatedApiScannerServiceException =
                 new DeprecatedApiScannerServiceException(
-                    message: "Service error occurred, contact support.",
+                    message: "Deprecated API scanner service error occurred, contact support.",
                     innerException: failedServiceDeprecatedApiScannerExceptions);
 
             this.dateTimeBrokerMock.Setup(broker =>
