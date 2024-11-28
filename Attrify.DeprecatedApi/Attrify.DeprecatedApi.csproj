@@ -50,5 +50,11 @@
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Attrify.DeprecatedApi.Tests.Unit" />
+		<InternalsVisibleTo Include="Attrify.DeprecatedApi.Tests.Acceptance" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
 	
 </Project>
