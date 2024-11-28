@@ -53,7 +53,7 @@ namespace Attrify.Middlewares
                     sunsetDate = DateTime.UtcNow;
                 }
 
-                if (sunsetDate <= System.DateTime.UtcNow)
+                if (sunsetDate <= DateTime.UtcNow)
                 {
                     context.Response.StatusCode = StatusCodes.Status410Gone;
 

@@ -50,5 +50,15 @@
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Attrify.DeprecatedApi.Tests.Unit" />
+		<InternalsVisibleTo Include="Attrify.DeprecatedApi.Tests.Acceptance" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Xeption" Version="2.8.0" />
+	</ItemGroup>
 	
 </Project>

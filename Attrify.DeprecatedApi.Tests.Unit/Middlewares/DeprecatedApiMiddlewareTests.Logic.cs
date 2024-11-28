@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Moq;
 
-namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
+namespace Attrify.DeprecatedApi.Tests.Unit.Middlewares
 {
     public partial class DeprecatedApiMiddlewareTests
     {
@@ -228,7 +228,7 @@ namespace Attrify.InvisibleApi.Tests.Unit.Middlewares
             var actualErrorDetails = actualErrorDetailsRaw.ToDictionary(
                 kvp => kvp.Key,
                 kvp => kvp.Value.ValueKind == JsonValueKind.Number
-                    ? (object)kvp.Value.GetInt32()
+                    ? kvp.Value.GetInt32()
                     : (object)kvp.Value.GetString()
             );
 
