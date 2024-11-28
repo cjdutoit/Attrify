@@ -178,8 +178,39 @@ The middleware evaluates each incoming request:
             }
         }
     ```
+2.  Add the middleware to your application's DI container :
 
-2.  Add the middleware to your application's pipeline:
+    #### In `Program.cs` or `Startup.cs`:
+
+    ```csharp
+
+        public class Program
+        {
+            public static void Main(string[] args)
+            {
+                var builder = WebApplication.CreateBuilder(args);
+                var invisibleApiKey = new InvisibleApiKey();
+                ConfigureServices(builder, builder.Configuration, invisibleApiKey);
+                var app = builder.Build();
+                ConfigurePipeline(app, invisibleApiKey);
+                app.Run();
+            }
+
+            public static void ConfigureServices(
+                WebApplicationBuilder builder,
+                IConfiguration configuration,
+                InvisibleApiKey invisibleApiKey)
+            {
+                ...
+
+                builder.Services.AddSingleton(invisibleApiKey);
+
+                ...
+
+            }
+        }
+    ```
+3.  Add the middleware to your application's pipeline:
 
     #### In `Program.cs` or `Startup.cs`:
 
@@ -280,9 +311,20 @@ header is present in the request and the user is authenticated with the required
 
 * * * * *
 
-## Setup the Web Application
+## Setup the Acceptance Test Project
 
-### Step 1: Create a Test Auth Handler
+### Step 1: Create a Custom Authentication Scheme Options class
+
+This will allow you to pass the invisible api key to the `TestAuthHandler`
+
+```csharp
+    public class CustomAuthenticationSchemeOptions : AuthenticationSchemeOptions
+    {
+        public InvisibleApiKey InvisibleApiKey { get; set; }
+    }
+```
+
+### Step 2: Create a Test Auth Handler
 
 This handler will simulate an authenticated user with the required role.
 ```csharp
@@ -321,7 +363,7 @@ This handler will simulate an authenticated user with the required role.
     }
 ```
 
-### Step 2: Create a Test Web Application Factory
+### Step 3: Create a Test Web Application Factory
 
 This will allow you to override the default authentication and authorization configuration applying the `TestAuthHandler` and `TestPolicy` to simulate an authenticated user with the required role.
 
@@ -377,7 +419,7 @@ This will allow you to override the default authentication and authorization con
     }
 ```
 
-### Step 3: Create an API Broker Class
+### Step 4: Create an API Broker Class
 
 This class initializes the test web application factory and configures an `HttpClient` to 
 automatically include the custom header key-value pair in all requests.
@@ -393,13 +435,13 @@ public partial class ApiBroker
     public ApiBroker()
     {
         this.webApplicationFactory = new TestWebApplicationFactory<Program>();
+        this.invisibleApiKey = this.webApplicationFactory.Services.GetService<InvisibleApiKey>();
         this.httpClient = this.webApplicationFactory.CreateClient();
 
         this.httpClient.DefaultRequestHeaders
             .Add(this.invisibleApiKey.Key, this.invisibleApiKey.Value);
 
         this.apiFactoryClient = new RESTFulApiFactoryClient(this.httpClient);
-        this.invisibleApiKey = this.webApplicationFactory.Services.GetService<InvisibleApiKey>();
     }
 }
 
