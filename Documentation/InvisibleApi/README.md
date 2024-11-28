@@ -424,13 +424,13 @@ public partial class ApiBroker
     public ApiBroker()
     {
         this.webApplicationFactory = new TestWebApplicationFactory<Program>();
+        this.invisibleApiKey = this.webApplicationFactory.Services.GetService<InvisibleApiKey>();
         this.httpClient = this.webApplicationFactory.CreateClient();
 
         this.httpClient.DefaultRequestHeaders
             .Add(this.invisibleApiKey.Key, this.invisibleApiKey.Value);
 
         this.apiFactoryClient = new RESTFulApiFactoryClient(this.httpClient);
-        this.invisibleApiKey = this.webApplicationFactory.Services.GetService<InvisibleApiKey>();
     }
 }
 
