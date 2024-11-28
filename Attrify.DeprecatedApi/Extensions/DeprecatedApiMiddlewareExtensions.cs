@@ -87,8 +87,6 @@ namespace Attrify.Extensions
         public static IApplicationBuilder UseDeprecatedApiMiddlewareAndIncludeDeprecatedApisController(
             this IApplicationBuilder builder)
         {
-
-            // Register DeprecatedApiScanner and service
             builder.ApplicationServices.GetRequiredService<IServiceCollection>()
                 .AddSingleton<IDeprecatedApiScannerService, DeprecatedApiScannerService>();
 
