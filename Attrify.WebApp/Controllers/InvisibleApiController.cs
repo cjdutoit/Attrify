@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Attrify.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Attrify.WebApplication.Controllers
+namespace Attrify.WebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

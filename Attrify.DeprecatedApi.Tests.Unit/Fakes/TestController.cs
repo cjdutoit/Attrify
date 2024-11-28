@@ -5,7 +5,7 @@
 using Attrify.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Attrify.DeprecatedApi.Tests.Unit.Controllers
+namespace Attrify.DeprecatedApi.Tests.Unit.Fakes
 {
     // Test Controller for mocking purposes
     [ApiController]

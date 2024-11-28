@@ -4,7 +4,6 @@
 
 using Attrify.DeprecatedApi.Brokers.DateTimes;
 using Attrify.DeprecatedApi.Services.DeprecatedApiScanners;
-using Attrify.DeprecatedApi.Tests.Unit.Controllers;
 using Attrify.DeprecatedApi.Tests.Unit.Fakes;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
