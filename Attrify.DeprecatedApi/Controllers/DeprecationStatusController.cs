@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Attrify.DeprecatedApi.Models.Foundations.DeprecatedApiScanners;
+using Attrify.DeprecatedApi.Models.Foundations.DeprecatedApiScanners.Exceptions;
 using Attrify.DeprecatedApi.Services.DeprecatedApiScanners;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -25,9 +26,16 @@ namespace Attrify.DeprecatedApi.Controllers
         [HttpGet]
         public async ValueTask<ActionResult<List<DeprecatedApiInfo>>> Get()
         {
-            var deprecatedApis = await deprecatedApiScannerService.GetDeprecatedApisAsync();
+            try
+            {
+                var deprecatedApis = await deprecatedApiScannerService.GetDeprecatedApisAsync();
 
-            return Ok(deprecatedApis);
+                return Ok(deprecatedApis);
+            }
+            catch (DeprecatedApiScannerServiceException deprecatedApiScannerServiceException)
+            {
+                return InternalServerError(deprecatedApiScannerServiceException);
+            }
         }
     }
 }
