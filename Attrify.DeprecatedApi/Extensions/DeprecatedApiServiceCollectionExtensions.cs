@@ -19,7 +19,7 @@ namespace Attrify.Extensions
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to configure.</param>
         /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
-        public static IServiceCollection AddDeprecatedApiSupport(this IServiceCollection services)
+        public static IServiceCollection AddDeprecationStatusController(this IServiceCollection services)
         {
             services.AddSingleton<IDateTimeBroker, DateTimeBroker>();
             services.AddSingleton<IDeprecatedApiScannerService, DeprecatedApiScannerService>();
