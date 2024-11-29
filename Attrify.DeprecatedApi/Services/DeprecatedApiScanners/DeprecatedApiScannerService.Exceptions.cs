@@ -11,7 +11,7 @@ using Xeptions;
 
 namespace Attrify.DeprecatedApi.Services.DeprecatedApiScanners
 {
-    internal partial class DeprecatedApiScannerService : IDeprecatedApiScannerService
+    public partial class DeprecatedApiScannerService : IDeprecatedApiScannerService
     {
         private delegate ValueTask<List<DeprecatedApiInfo>> ReturningDeprecatedApiInfoListFunction();
 

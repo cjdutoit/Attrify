@@ -8,7 +8,7 @@ using Attrify.DeprecatedApi.Models.Foundations.DeprecatedApiScanners;
 
 namespace Attrify.DeprecatedApi.Services.DeprecatedApiScanners
 {
-    internal interface IDeprecatedApiScannerService
+    public interface IDeprecatedApiScannerService
     {
         ValueTask<List<DeprecatedApiInfo>> GetDeprecatedApisAsync();
     }
