@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Attrify.DeprecatedApi.Services.DeprecatedApiScanners
 {
-    internal partial class DeprecatedApiScannerService : IDeprecatedApiScannerService
+    public partial class DeprecatedApiScannerService : IDeprecatedApiScannerService
     {
         private readonly ApplicationPartManager partManager;
         private readonly IDateTimeBroker dateTimeBroker;
