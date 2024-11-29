@@ -2,7 +2,6 @@
 // Copyright (c)  Christo du Toit - All rights reserved.
 // -----------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Attrify.DeprecatedApi.Models.Foundations.DeprecatedApiScanners;
@@ -24,7 +23,11 @@ namespace Attrify.DeprecatedApi.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<ActionResult<List<DeprecatedApiInfo>>> Get() =>
-            throw new NotImplementedException();
+        public async ValueTask<ActionResult<List<DeprecatedApiInfo>>> Get()
+        {
+            var deprecatedApis = await deprecatedApiScannerService.GetDeprecatedApisAsync();
+
+            return Ok(deprecatedApis);
+        }
     }
 }
