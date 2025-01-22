@@ -454,7 +454,7 @@ The custom header and required role are automatically included in all requests, 
 adapt your tests to include them manually.
 
 
-### Step 4: Create an acceptance test that will access the invisible endpoints
+### Step 5: Create an acceptance test that will access the invisible endpoints
 
 ```csharp
 public partial class ProductsApiTests
