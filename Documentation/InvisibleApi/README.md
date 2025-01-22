@@ -444,6 +444,7 @@ public partial class ApiBroker
         this.apiFactoryClient = new RESTFulApiFactoryClient(this.httpClient);
     }
 }
+```
 
 **Note:** The `InvisibleApiKey` instance is retrieved from the DI container, providing 
 access to the dynamically generated key-value pair.
